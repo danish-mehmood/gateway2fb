@@ -1,0 +1,77 @@
+/* body {
+    width: 100%;
+    max-width: 30rem;
+    margin: 0 auto;
+  }
+   */
+  /* img {
+    width: 100%;
+  } */
+  
+  /* .siema {
+    margin: 1rem 0;
+  /* } */
+
+  #form{
+      margin-left: 460px;
+      margin-bottom:40px;
+  } 
+  a {
+   
+    text-decoration: none !important;
+}
+
+a:hover 
+{
+     text-decoration:none; 
+     cursor:pointer;  
+}
+.validation-errors{
+color: #F53333;
+position: absolute;
+top: 160px;
+}
+
+.profile-name{
+  font-family: 'Kulim Park', sans-serif !important;
+}
+  /* #paginate_form{
+
+    margin-left:10px;
+    position: absolute;
+    top:11px;
+    left: 500px;
+  } */
+  /* #paginate_form2{
+
+    margin-left:10px;
+    position: absolute;
+     top:11px; 
+     left: 10px; */
+    /* left: 50px; */ */
+  /* }  */
+
+  /* .date1{
+    position: absolute;
+    top:100px;
+  }
+
+  .date2{
+    position: absolute;
+    top:50px;
+    left:300px;
+  } */
+
+#datepicker-start{
+  margin-left: 12px;
+}
+
+.logout{
+   position: absolute;
+   top:10px;
+   right:20px;
+}
+
+  
+
+  
