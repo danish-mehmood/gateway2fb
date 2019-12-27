@@ -5,24 +5,19 @@ function compare()
 {
     var startDt = document.getElementById("startDate").value;
     var endDt = document.getElementById("endDate").value;
-    var btn =document.getElementById("submitter");
+    var btn = document.getElementById("submitter");
     var para = document.getElementById("validation-errors");
-
-    if( (new Date(startDt).getTime() < new Date(endDt).getTime()))
+    var valid = true;
+    
+    if(startDt == "" || endDt == ""){
+        para.innerHTML="Date(s) missing.";
+        valid = false;
+    }
+    else if( (new Date(startDt).getTime() > new Date(endDt).getTime()))
     {
-        console.log("theek hai janay do" );
-        btn.disabled=false;
+        para.innerHTML="Start date must occur before End date.";
+        valid = false;
+        //btn.disabled=false;
     }
-    else {
-        console.log("mat janay dena ");
-        para.innerHTML="end date must be larger than start date";
-
-
-        // console.log(para);
-
-
-    }
+    return valid;
 }
-
-
-// console.log("hahahah");
