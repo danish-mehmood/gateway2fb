@@ -78,6 +78,12 @@ class FacebookApiCalls{
        
      }
 
+     public function createLink($account){
+         $url="https://business.facebook.com/adsmanager/manage/accounts?act=$account&business_id=281136205409884";
+         
+         return $url;
+     }
+
     
 }
 ?>

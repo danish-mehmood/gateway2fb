@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{asset('css/demo_1/style.css')}}">
     <!-- End Layout styles -->
     <link rel="shortcut icon" href="{{asset('images/favicon.png')}}" />
+    <script src="{{asset('js/myjs.js')}}"></script>
   </head>
   <body>
     <div class="container-scroller">
@@ -142,7 +143,7 @@
                             
                             
                               <td>
-                              {{$names[$i]}}
+                              <a href="{{$links[$i]}}">{{$names[$i]}}</a>
                             </td>
                             
                             
@@ -338,7 +339,7 @@
     <script src="{{asset('js/shared/off-canvas.js')}}"></script>
     <script src="{{asset('js/shared/misc.js')}}"></script>
 
-    <script src="{{asset('js/myjs.js')}}"></script>
+    
 
     <!-- endinject -->
     <!-- Custom js for this page-->

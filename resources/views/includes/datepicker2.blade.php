@@ -1,4 +1,4 @@
-<form id="form" name="form" class="form-inline" method="POST" action="{{route('filtered')}}">
+<form id="form" name="form" class="form-inline" method="GET" action="{{route('filtered2')}}">
     @csrf
    
     {{-- <input type="radio" name="all" value="all" >
@@ -7,18 +7,18 @@
     <div class="form-group"><strong>Start Date</strong></label>
         <input id="startDate" name="startDate" type="date" class="form-control" required />
         <br>
-        {{-- @if(count($errors)>0)
-        @foreach ($errors->all() as $error ) --}}
+        @if(count($errors)>0)
+        @foreach ($errors->all() as $error )
             
         
-    <p id="validation-errors"></p>
-    {{-- @endforeach
-    @endif --}}
+    <p class="validation-errors">{{$error}}</p>
+    @endforeach
+    @endif
         &nbsp;
         <label for="endDate"><strong>End Date</strong></label>
-        <input id="endDate" name="endDate" type="date" class="form-control"  onblur="compare();" required/>
+        <input id="endDate" name="endDate" type="date" class="form-control" required/>
         &nbsp;
-        <button type="submit" id="submitter" class="btn btn-primary" disabled >Go</button> &nbsp;
+        <button type="submit" class="btn btn-primary" >Go</button> &nbsp;
         <button class="btn btn-success" ><a style="text-decoration:none" href="{{route('dashboard')}}">Reset</a></button>
 
     </div>

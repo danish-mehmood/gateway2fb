@@ -15,6 +15,7 @@ class facebookAdsController extends Controller
         // $url="https://graph.facebook.com/v5.0/$user_id/adaccounts/?fields=name,account_status,account_id,amount_spent&access_token=$access_token";
         
         $account_id = array();
+        $links = array();
         $status =array();
         $spent_ammount =array();
         $account_name =array();
@@ -54,15 +55,18 @@ class facebookAdsController extends Controller
             $status_data=$data['data'][$i]['account_status'];
             $spent=$data['data'][$i]['amount_spent'];
             $name=$data['data'][$i]['name'];
+            $link = $fb->createLink($data['data'][$i]['account_id'] ); 
+            array_push($links, $link);
             array_push($account_id , $id);
             array_push($status , $status_data);
             array_push($account_name , $name);
             array_push($spent_ammount, $spent);
            
+           
         }
-
+        //   dd($links);
         return view("dashboard.basic-admin")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
-        'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page]);
+        'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page ,"links"=>$links]);
 
 
 
@@ -76,7 +80,7 @@ class facebookAdsController extends Controller
           $status =array();
           $spent_ammount =array();
           $account_name =array();
-        
+          $links = array();
           $has=array_keys($data["paging"]);
         //  dd($data); 
           if(in_array('next',$has)){
@@ -97,6 +101,8 @@ class facebookAdsController extends Controller
               $status_data=$data['data'][$i]['account_status'];
               $spent=$data['data'][$i]['amount_spent'];
               $name=$data['data'][$i]['name'];
+              $link = $fb->createLink($data['data'][$i]['account_id'] ); 
+              array_push($links, $link);
               array_push($account_id , $id);
               array_push($status , $status_data);
               array_push($account_name , $name);
@@ -105,7 +111,7 @@ class facebookAdsController extends Controller
           }
   
           return view("dashboard.basic-admin")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
-          'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page]);
+          'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,"links"=>$links]);
   
     
       }
@@ -116,6 +122,7 @@ class facebookAdsController extends Controller
         $status =array();
         $spent_ammount =array();
         $account_name =array();
+        $links = array();
       
         $has=array_keys($data["paging"]);
     //    dd($data); 
@@ -137,6 +144,8 @@ class facebookAdsController extends Controller
             $status_data=$data['data'][$i]['account_status'];
             $spent=$data['data'][$i]['amount_spent'];
             $name=$data['data'][$i]['name'];
+            $link = $fb->createLink($data['data'][$i]['account_id'] ); 
+            array_push($links, $link);
             array_push($account_id , $id);
             array_push($status , $status_data);
             array_push($account_name , $name);
@@ -145,7 +154,7 @@ class facebookAdsController extends Controller
         }
 
         return view("dashboard.basic-admin")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
-        'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page]);
+        'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,"links"=>$links]);
 
   
     }
@@ -165,6 +174,7 @@ class facebookAdsController extends Controller
         $prev_page ="";
         $start_date = $request->startDate;
         $end_date = $request->endDate;
+        $links = array();
         // dd($data);
         //  dd(gettype($request->startDate));
         $has=array_keys($data["paging"]);
@@ -186,6 +196,8 @@ class facebookAdsController extends Controller
         for($i=0; $i<=count($data['data'])-1 ; $i++){
             $id =$data['data'][$i]['account_id'] ;
             $status_data=$data['data'][$i]['account_status'];
+            $link = $fb->createLink($data['data'][$i]['account_id'] ); 
+            
             
             $name=$data['data'][$i]['name'];
             $has = array_keys($data['data'][$i]);
@@ -199,6 +211,7 @@ class facebookAdsController extends Controller
             array_push($account_id , $id);
             array_push($status , $status_data);
             array_push($account_name , $name);
+            array_push($links, $link);
             
          
             
@@ -214,7 +227,7 @@ class facebookAdsController extends Controller
 
     return view("dashboard.date-filter")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
     'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,
-         "startDate"=>$start_date , "endDate"=>$end_date ]);
+         "startDate"=>$start_date , "endDate"=>$end_date,"links"=>$links ]);
     
 
 }
@@ -226,6 +239,7 @@ public function next_date_paginator(Request $request , FacebookApiCalls $fb){
       $status =array();
       $spent_ammount =array();
       $account_name =array();
+      $links = array();
     
       $has=array_keys($data["paging"]);
       
@@ -246,6 +260,8 @@ public function next_date_paginator(Request $request , FacebookApiCalls $fb){
       for($i=0 ; $i<=count($data['data'])-1 ; $i++){
         $id =$data['data'][$i]['account_id'] ;
         $status_data=$data['data'][$i]['account_status'];
+        $link = $fb->createLink($data['data'][$i]['account_id'] ); 
+        array_push($links, $link);
         
         $name=$data['data'][$i]['name'];
         $has = array_keys($data['data'][$i]);
@@ -264,7 +280,8 @@ public function next_date_paginator(Request $request , FacebookApiCalls $fb){
       }
 
       return view("dashboard.date-filter")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
-      'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,"startDate"=>$request->startDate,"endDate"=>$request->endDate]);
+      'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,"startDate"=>$request->startDate,
+      "endDate"=>$request->endDate,"links"=>$links]);
 }
 
 
@@ -275,6 +292,7 @@ public function prev_date_paginator(Request $request , FacebookApiCalls $fb){
       $status =array();
       $spent_ammount =array();
       $account_name =array();
+      $links = array();
     
       $has=array_keys($data["paging"]);
       
@@ -295,6 +313,8 @@ public function prev_date_paginator(Request $request , FacebookApiCalls $fb){
       for($i=0 ; $i<=count($data['data'])-1 ; $i++){
         $id =$data['data'][$i]['account_id'] ;
         $status_data=$data['data'][$i]['account_status'];
+        $link = $fb->createLink($data['data'][$i]['account_id'] ); 
+        array_push($links, $link);
         
         $name=$data['data'][$i]['name'];
         $has = array_keys($data['data'][$i]);
@@ -313,7 +333,8 @@ public function prev_date_paginator(Request $request , FacebookApiCalls $fb){
       }
 
       return view("dashboard.date-filter")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
-      'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,"startDate"=>$request->startDate,"endDate"=>$request->endDate]);
+      'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,
+      "startDate"=>$request->startDate,"endDate"=>$request->endDate,"links"=>$links]);
 }
 
 public function dashboard_status_filtered(Request $request , FacebookApiCalls $fb){

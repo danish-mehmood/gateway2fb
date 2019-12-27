@@ -584,7 +584,7 @@
                             
                             
                               <td>
-                              {{$names[$i]}}
+                              <a href="{{$links[$i]}}"> {{$names[$i]}}</a>
                             </td>
                             
                             
