@@ -143,7 +143,7 @@
                             
                             
                               <td>
-                              <a href="{{$links[$i]}}">{{$names[$i]}}</a>
+                              <a href="{{$links[$i]}}" target="_blank">{{$names[$i]}}</a>
                             </td>
                             
                             
