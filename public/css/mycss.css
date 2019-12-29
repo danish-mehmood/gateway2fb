@@ -28,8 +28,6 @@ a:hover
 }
 #validation-errors{
 color: #F53333;
-position: absolute;
-top: 160px;
 }
 
 .profile-name{

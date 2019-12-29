@@ -7,7 +7,7 @@
     <title>gateway to facebook</title>
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css" rel="stylesheet" type="text/css" />
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- plugins:css -->
     <!--datepicker files -->
     <!--end of css files here-->
@@ -905,3 +905,9 @@
 
   </body>
 </html>
+<script>
+$("#startDate, #endDate").click(function(){
+  var para = document.getElementById("validation-errors");
+  para.innerHTML=" ";
+});
+</script>

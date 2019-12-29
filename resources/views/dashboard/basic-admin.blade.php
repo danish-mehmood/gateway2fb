@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{asset('css/mycss.css')}}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Kulim+Park&display=swap" rel="stylesheet">
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{asset('/css/shared/style.css')}}">
     <!-- endinject -->
     <!-- Layout styles -->
@@ -103,7 +103,6 @@
 
               @include('includes.datepicker')
              
-
                <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
@@ -119,198 +118,57 @@
                           {{-- <th> Deadline </th> --}}
                         </tr>
                       </thead>
-                      <tbody>                       
-                      {{-- @foreach($ids as $id) 
-                        @foreach($names as $name) 
-                        @foreach($status as $stat) 
-                        @foreach($spent as $spents) 
-                        <tr>
-                          <td> {{$id}} </td>
-                          <td> {{$name}} </td>
-                          <td> {{$stat}} </td>
-                          <td> {{$spents}} </td>
-                        </tr>
-                        @endforeach  
-                        @endforeach
-                        @endforeach
-                        @endforeach  --}}
-                        
+                      <tbody>                                     
                         @for($i=0 ; $i<count($ids);$i++)
                         <tr>
                               <td>
                               {{$ids[$i]}}
                             </td>
-                            
-                            
                               <td>
                               <a href="{{$links[$i]}}" target="_blank">{{$names[$i]}}</a>
                             </td>
-                            
-                            
                               <td>
                                 @if($status[$i] == 1)
                               <span style="color:#47A025">ACTIVE</span>
                               @endif
                               @if($status[$i] == 101)
                               <span style="color:#A50104">CLOSED</span>
-                            
-                               
                               @endif
                               @if($status[$i] == 2)
                               <span style="color:#A50104">DISABLED</span>
-                            
-                               
                               @endif
                               @if($status[$i] == 3)
                               <span style="color:#A50104">UNSETTLED</span>
-                            
-                               
                               @endif
                               @if($status[$i] == 7)
                               <span style="color:#A50104">PENDING_RISK_REVIEW</span>
-                            
-                               
                               @endif
                               @if($status[$i] == 8)
                               <span style="color:#A50104">PENDING_SETTLEMENT</span>
-                            
-                               
                               @endif
                               @if($status[$i] == 9)
                               <span style="color:#A50104">IN_GRACE_PERIOD</span>
-                            
-                               
                               @endif
                               @if($status[$i] == 100)
                               <span style="color:#A50104">PENDING_CLOSURE</span>
-                            
-                               
                               @endif
                               @if($status[$i] == 201)
                               <span style="color:#A50104">ANY_ACTIVE</span>
-                            
-                               
                               @endif
                               @if($status[$i] == 202)
                               <span style="color:#A50104">ANY_CLOSED</span>
-                            
-                               
                               @endif
-                                                         
-                              
-                              
                             </td>
-                            
-                            
                               <td>
                               ${{$spent[$i]/100}}
                             </td>
                           </tr>
-                        @endfor
-                      
-                     
-                     
-                     
-                        {{-- @foreach($ids as $id)
-                        <tr>
-                          <td> {{$id}} </td>
-                          @endforeach
-                        @foreach($names as $name)   
-                        <td> {{$name}} </td>
-                        @endforeach
-                        @foreach($status as $stat)
-                        <td> {{$stat}} </td> 
-                        @endforeach
-                        @foreach($spent as $spents) 
-                        <td> {{$spents}} </td>
-                      </tr> 
-                        @endforeach --}}
-                      
-
-                        
-                       
-                         
-                      {{-- </tr> --}}
-                          {{-- <td> Herman Beck </td>
-                          <td>
-                           
-                          </td>
-                          <td> $ 77.99 </td> --}}
-                          {{-- <td> May 15, 2015 </td> --}}
-                        {{-- </tr>
-                        <tr> --}}
-                          {{-- <td> 2 </td>
-                          <td> Messsy Adam </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td> $245.30 </td>
-                          {{-- <td> July 1, 2015 </td> --}}
-                        {{-- </tr> --}}
-                        {{-- <tr>
-                          <td> 3 </td>
-                          <td> John Richards </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-warning" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td> $138.00 </td>
-                          {{-- <td> Apr 12, 2015 </td> --}}
-                        {{-- </tr>  --}}
-                        {{-- <tr>
-                          <td> 4 </td>
-                          <td> Peter Meggik </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td> $ 77.99 </td>
-                          {{-- <td> May 15, 2015 </td> --}}
-                        {{-- </tr> --}}
-                        {{-- <tr>
-                          <td> 5 </td>
-                          <td> Edward </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td> $ 160.25 </td>
-                          {{-- <td> May 03, 2015 </td> --}}
-                        {{-- </tr>  --}}
-                        {{-- <tr>
-                          <td> 6 </td>
-                          <td> John Doe </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td> $ 123.21 </td>
-                          {{-- <td> April 05, 2015 </td> --}}
-                        {{-- </tr>/ --}}
-                        {{-- <tr>
-                          <td> 7 </td>
-                          <td> Henry Tom </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td> $ 150.00 </td>
-                          {{-- <td> June 16, 2015 </td> --}}
-                        {{-- </tr>  --}}
+                        @endfor       
                       </tbody>
                     </table>
-                   
                   </div>
                 </div>
               </div>
-             
             </div>
           </div>
           <!-- content-wrapper ends -->
@@ -352,3 +210,9 @@
 
   </body>
 </html>
+<script>
+$("#startDate, #endDate").click(function(){
+  var para = document.getElementById("validation-errors");
+  para.innerHTML=" ";
+});
+</script>
