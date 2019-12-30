@@ -83,7 +83,7 @@
              
         
             {{-- <h1>{{$prev_link}}</h1>           --}}
-            <form id="paginate_form" action="{{route('prev_paginator')}}" method="POST">  
+            <form id="paginate_form" action="{{route('prev_paginator',["page"=>$page])}}" method="POST">  
               @csrf
             @if($prev_link != "")
             <button type="submit" class="btn btn-sm btn-primary"><</button>
@@ -92,7 +92,7 @@
           </form>
 
         &nbsp;
-        <form id="paginate_form2" action="{{route('next')}}" method="POST">
+        <form id="paginate_form2" action="{{route('next',["page"=>$page])  }}" method="POST">
           @csrf 
           @if($next_link != "")
                {{-- <input type="submit" value="Next"> --}}
@@ -106,7 +106,8 @@
                <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h2 class="card-title"> Ad Accounts  </h2>
+                  <h2 class="card-title"> Ad Accounts  <span class="page_count">Page {{$page}} of {{$total_pages}}</span> </h2>
+                  
                     {{-- <p class="card-description"> Add class <code>.table-bordered</code> </p> --}}
                     <table class="table table-bordered">
                       <thead>

@@ -12,6 +12,11 @@
     margin: 1rem 0;
   /* } */
 
+
+  .page_count{
+    color:red;
+    margin-left: 750px;
+  }
   #form{
       margin-left: 460px;
       margin-bottom:40px;
