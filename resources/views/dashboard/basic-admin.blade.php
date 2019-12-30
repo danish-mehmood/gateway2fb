@@ -83,14 +83,27 @@
              
         
             {{-- <h1>{{$prev_link}}</h1>           --}}
+            @if($prev_link != "")
+
+            <form id="paginate_form2" action="{{route('first_page')  }}" method="POST">
+              @csrf 
+             
+                   {{-- <input type="submit" value="Next"> --}}
+                   <button type="submit" class="btn btn-sm btn-success"><<</button>
+                 {{-- <input type="hidden" name="next" value="{{$next_link}}"> --}}
+          
+                  </form>
+          &nbsp;
+
             <form id="paginate_form" action="{{route('prev_paginator',["page"=>$page])}}" method="POST">  
               @csrf
-            @if($prev_link != "")
+           
+            
             <button type="submit" class="btn btn-sm btn-primary"><</button>
             <input type="hidden" name="prev" value="{{$prev_link}}">
-            @endif
+            
           </form>
-
+          @endif
         &nbsp;
         <form id="paginate_form2" action="{{route('next',["page"=>$page])  }}" method="POST">
           @csrf 
@@ -100,6 +113,15 @@
              <input type="hidden" name="next" value="{{$next_link}}">
              @endif
               </form>
+              &nbsp;
+              <form id="paginate_form2" action="{{route('last_page')  }}" method="POST">
+                @csrf 
+                @if($next_link != "")
+                     {{-- <input type="submit" value="Next"> --}}
+                     <button type="submit" class="btn btn-sm btn-success">>></button>
+                   {{-- <input type="hidden" name="next" value="{{$next_link}}"> --}}
+                   @endif
+                    </form>
 
               @include('includes.datepicker')
              

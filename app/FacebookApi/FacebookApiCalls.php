@@ -96,18 +96,43 @@ class FacebookApiCalls{
         curl_close($curl);
 
         return round(count($json["data"])/25);
+        // return count($json['data']);
 
      }
-    public function getIncrementedPageNumber(){
-       $page = self::$page_number+1;
-       return $page;
+   
+     public function getAllData(){
 
-    } 
-    public function getDecrementedPageNumber(){
-        $page = self::$page_number-1;
-        return $page;
+        $curl = curl_init();
+        $url ="https://graph.facebook.com/v5.0/$this->user_id/adaccounts/?fields=name,account_status,account_id,amount_spent&access_token=$this->access_token&limit=1000000";
+        curl_setopt($curl , CURLOPT_URL , $url);
+        curl_setopt($curl , CURLOPT_RETURNTRANSFER , 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+        $result = curl_exec($curl);
+        $json = json_decode($result , true );
+        curl_close($curl);
+
+        return $json;
+
+     }
+
+     public function getAllDataDateFilter($startDate  , $endDate){
+        $curl = curl_init();
+        // $link = $url ;
+        // $url ="https://graph.facebook.com/v5.0/$this->user_id/adaccounts/?fields=name,account_status,account_id,amount_spent&access_token=$this->access_token";
+        $url="https://graph.facebook.com/v5.0/$this->user_id/adaccounts?fields=name,insights.time_range({'since':'$startDate','until':'$endDate'}){spend},account_status,account_id&access_token=$this->access_token&limit=100000";
+        // return $url;
+        curl_setopt($curl , CURLOPT_URL , $url);
+        curl_setopt($curl , CURLOPT_RETURNTRANSFER , 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+        $result = curl_exec($curl);
+        $json = json_decode($result , true );
+        curl_close($curl);
  
-     } 
+        return $json;
+        
+     }
 
     
 }
