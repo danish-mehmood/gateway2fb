@@ -22,9 +22,6 @@ class FacebookApiCalls{
         curl_close($curl);
 
         return $json;
-
-
-      
     }
 
     public function Paginate($url){
@@ -39,9 +36,6 @@ class FacebookApiCalls{
        curl_close($curl);
 
        return $json;
-       
-
-
     }
 
     public function Date_filter($startDate  , $endDate){
@@ -59,10 +53,22 @@ class FacebookApiCalls{
         curl_close($curl);
  
         return $json;
-        
- 
- 
      }
+
+     public function Search_Filter($searchTerm){
+      $curl = curl_init();
+      $url="https://graph.facebook.com/v5.0/$this->user_id/adaccounts?fields=name,account_status,account_id,amount_spent&filtering=[{'field':'name','operator':'CONTAIN','value':'$searchTerm'}]&access_token=$this->access_token&limit=1000";
+      // return $url;
+      curl_setopt($curl , CURLOPT_URL , $url);
+      curl_setopt($curl , CURLOPT_RETURNTRANSFER , 1);
+      curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+      curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+      $result = curl_exec($curl);
+      $json = json_decode($result , true );
+      curl_close($curl);
+      
+      return $json;
+   }
 
      public function  getMoreData($url , $number){
        $url = $url."&limit=$number";

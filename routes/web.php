@@ -24,6 +24,7 @@ Route::group(['prefix'=>'admin'  , 'middleware'=>['auth' , 'can:isAdmin']] , fun
     Route::post('/status_filter',"facebookAdsController@dashboard_status_filtered" )->name('dashboard_status_filtered');
     Route::post('/page/next',"facebookAdsController@next_paginator" )->name('next');
     Route::post('/page/prev',"facebookAdsController@prev_paginator" )->name('prev_paginator');
+    //Route::post('/search-filter',"facebookAdsController@searchFiltered")->name('search_filtered');
     Route::post('/date-filter', "facebookAdsController@filtered")->name('filtered');
     // Route::get('/date-filter2', "facebookAdsController@filtered")->name('filtered2');
     Route::post('date-filter/page/next',"facebookAdsController@next_date_paginator" )->name('next_date_paginator');

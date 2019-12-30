@@ -36,19 +36,6 @@ class facebookAdsController extends Controller
         $total_pages = $fb->getPageCount();
         // dd($total_pages);
         $page = 1;
-
-    
-     
-        
-        // if(count($data['paging'])==3){
-        //     $next_page =$data['paging']['next'];
-        //     $prev_page =$data['paging']['previous'];
-        // }
-        // else{
-        //     $next_page =$data['paging']['next'];
-        //     $prev_page="";
-        // }
-
         $has=array_keys($data["paging"]);
         
         if(in_array('next',$has)){
@@ -64,10 +51,6 @@ class facebookAdsController extends Controller
             $prev_page="";
         }
         // dd($prev_page);
-            
-        
-
-
         for($i=0 ; $i<count($data['data'])-1 ; $i++){
             $id =$data['data'][$i]['account_id'] ;
             $status_data=$data['data'][$i]['account_status'];
@@ -79,17 +62,11 @@ class facebookAdsController extends Controller
             array_push($status , $status_data);
             array_push($account_name , $name);
             array_push($spent_ammount, $spent);
-           
-           
         }
         //   dd($links);
         return view("dashboard.basic-admin")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
         'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page
         ,'prev_link'=>$prev_page ,"links"=>$links  , "page"=>$page , "total_pages"=>$total_pages]);
-
-
-
-    
     }
 
     public function prev_paginator(Request $request ,FacebookApiCalls $fb){
@@ -183,11 +160,56 @@ class facebookAdsController extends Controller
         return view("dashboard.basic-admin")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
         'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,"links"=>$links
         , "total_pages"=>$total_pages , "page"=>$page]);
-
-  
     }
 
-    public function  filtered(Request $request , FacebookApiCalls $fb){
+/*
+    public function searchFiltered(Request $request, FacebookApiCalls $fb){
+        $data = $fb->Search_Filter($request->searchTerm);
+        $account_id = array();
+        $status =array();
+        $spent_ammount =array();
+        $account_name =array();
+        $links = array();
+        $next_page ="";
+        $prev_page ="";
+        //dd(count($data['data']));
+        $page = 1;
+        $total_pages = (round(count($data["data"])/25)==0?$page:round(count($data["data"])/25));
+
+        $has=array_keys($data["paging"]);
+        if(in_array('next',$has)){
+            $next_page=$data['paging']['next'];
+        }
+        else{
+            $next_page="";
+        }
+        if(in_array('previous',$has)){
+            $prev_page=$data['paging']['previous'];
+        }
+        else{
+            $prev_page="";
+        }
+        for($i=0 ; $i<=count($data['data'])-1; $i++){
+            $id =$data['data'][$i]['account_id'] ;
+            $status_data=$data['data'][$i]['account_status'];
+            $spent=$data['data'][$i]['amount_spent'];
+            $name=$data['data'][$i]['name'];
+            $link = $fb->createLink($data['data'][$i]['account_id'] ); 
+            array_push($links, $link);
+            array_push($account_id , $id);
+            array_push($status , $status_data);
+            array_push($account_name , $name);
+            array_push($spent_ammount, $spent);
+           
+        }
+        //dd($links);
+        return view("dashboard.basic-admin")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
+        'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,"links"=>$links
+        , "total_pages"=>$total_pages , "page"=>$page]);
+    }
+
+*/
+    public function filtered(Request $request , FacebookApiCalls $fb){
     //    dd($request->startDate);
     $this->validate($request,[
         'endDate'        => 'required|date|date_format:Y-m-d|after:startDate',
@@ -222,12 +244,10 @@ class facebookAdsController extends Controller
             $prev_page="";
         }
 
-      
         for($i=0; $i<=count($data['data'])-1 ; $i++){
             $id =$data['data'][$i]['account_id'] ;
             $status_data=$data['data'][$i]['account_status'];
             $link = $fb->createLink($data['data'][$i]['account_id'] ); 
-            
             
             $name=$data['data'][$i]['name'];
             $has = array_keys($data['data'][$i]);
@@ -242,25 +262,15 @@ class facebookAdsController extends Controller
             array_push($status , $status_data);
             array_push($account_name , $name);
             array_push($links, $link);
-            
-         
-            
-           
         }
 
         // dd($spent_ammount);
     //   dd($data);
     //    return view("dashboard.date-filter");
-        
-           
-   
-
     return view("dashboard.date-filter")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
     'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,
          "startDate"=>$start_date , "endDate"=>$end_date,"links"=>$links , "total_pages"=>$total_pages,
          "page"=>$page]);
-    
-
 }
 
 public function next_date_paginator(Request $request , FacebookApiCalls $fb){
@@ -308,10 +318,7 @@ public function next_date_paginator(Request $request , FacebookApiCalls $fb){
         array_push($account_id , $id);
         array_push($status , $status_data);
         array_push($account_name , $name);
-        
-         
       }
-
       return view("dashboard.date-filter")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
       'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,"startDate"=>$request->startDate,
       "endDate"=>$request->endDate,"links"=>$links, "total_pages"=>$total_pages,
@@ -364,8 +371,6 @@ public function prev_date_paginator(Request $request , FacebookApiCalls $fb){
         array_push($account_id , $id);
         array_push($status , $status_data);
         array_push($account_name , $name);
-        
-         
       }
 
       return view("dashboard.date-filter")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
@@ -405,17 +410,9 @@ public function last_page(FacebookApiCalls $fb){
         array_push($spent_ammount, $spent);
        
     }
-
-    
-    
-
-
-    
-    
     return view("dashboard.basic-admin")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
     'ids'=>$account_id,'status'=>$status,
      "links"=>$links , "total_pages"=>$total_pages ,"page"=>$page,'next_link'=>"",'prev_link'=>""]);
-    
 }
 
 public function last_page_date_filter(Request $request , FacebookApiCalls $fb){
@@ -454,10 +451,6 @@ $data = $data["data"];
         array_push($status , $status_data);
         array_push($account_name , $name);
         array_push($links, $link);
-        
-     
-        
-       
     }
 
 
@@ -465,9 +458,6 @@ $data = $data["data"];
     'ids'=>$account_id,'status'=>$status,'next_link'=>"",'prev_link'=>"",
          "startDate"=>$request->startDate , "endDate"=>$request->endDate,"links"=>$links , "total_pages"=>$total_pages,
          "page"=>$total_pages]);
-
-  
-
 }
 
 
@@ -478,17 +468,6 @@ public function dashboard_status_filtered(Request $request , FacebookApiCalls $f
     $account_name =array();
     $total_pages = $fb->getPageCount();
     $data = $fb->GetAllAccounts();
-   
-    
-    // if(count($data['paging'])==3){
-    //     $next_page =$data['paging']['next'];
-    //     $prev_page =$data['paging']['previous'];
-    // }
-    // else{
-    //     $next_page =$data['paging']['next'];
-    //     $prev_page="";
-    // }
-
     $has=array_keys($data["paging"]);
     
     if(in_array('next',$has)){

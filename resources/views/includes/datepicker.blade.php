@@ -16,7 +16,21 @@
     </div>
     </div>
 </form>
-
+{{--
+<form id="form" name="form" class="form-inline" method="POST" action="{{route('search_filtered')}}">
+    @csrf
+   <div class="container">
+    <div class="form-group"><strong>Search by Account Name:</strong></label>
+        <input id="searchTerm" name="searchTerm" type="text" class="form-control" required />
+        <br>
+        <button type="submit" id="submitter" class="btn btn-primary" >Search</button> &nbsp;
+    </div>
+    <div>
+    <p id="validation-errors"> </p>
+    </div>
+    </div>
+</form>
+--}}
 {{-- <form action="{{route('dashboard_status_filtered')}}" method="POST" >
     @csrf
 
