@@ -385,7 +385,15 @@
                 <div><img src="https://pawelgrzybek.com/siema/assets/siema--pink.svg" alt="Siema image" /></div>
                 <div><img src="https://pawelgrzybek.com/siema/assets/siema--yellow.svg" alt="Siema image" /></div>
               </div> --}}
-          
+              <form id="paginate_form2" action="{{route('first_page_date_filter',["startDate"=>$startDate,"endDate"=>$endDate , "page"=>$page])  }}" method="POST">
+                @csrf 
+               
+                     {{-- <input type="submit" value="Next"> --}}
+                     <button type="submit" class="btn btn-sm btn-success"><<</button>
+                   {{-- <input type="hidden" name="next" value="{{$next_link}}"> --}}
+            
+                    </form>
+            &nbsp;
           
             <form id="paginate_form" action="{{route('prev_date_paginator',["startDate"=>$startDate,"endDate"=>$endDate , "page"=>$page])}}" method="POST">  
               @csrf
@@ -403,6 +411,17 @@
              <input type="hidden" name="next" value="{{$next_link}}">
              @endif
               </form>
+                    &nbsp;
+
+                    <form id="paginate_form2" action="{{route('last_page_date_filter' ,["startDate"=>$startDate,"endDate"=>$endDate]) }}" method="POST">
+                      @csrf 
+                      @if($next_link != "")
+                           {{-- <input type="submit" value="Next"> --}}
+                           <button type="submit" class="btn btn-sm btn-success">>></button>
+                         {{-- <input type="hidden" name="next" value="{{$next_link}}"> --}}
+                         @endif
+                          </form>
+
 
               @include('includes.datepicker')
 

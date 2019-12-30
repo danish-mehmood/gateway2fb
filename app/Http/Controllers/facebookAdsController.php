@@ -34,7 +34,9 @@ class facebookAdsController extends Controller
         $data = $fb->GetAllAccounts();
         
         $total_pages = $fb->getPageCount();
+        // dd($total_pages);
         $page = 1;
+
     
      
         
@@ -372,6 +374,102 @@ public function prev_date_paginator(Request $request , FacebookApiCalls $fb){
       , "total_pages"=>$total_pages,
       "page"=>$page]);
 }
+
+public function last_page(FacebookApiCalls $fb){
+    
+    $data = $fb->getAllData();
+    $data = $data["data"];
+    // dd(count($data["data"]));
+    $total_data = count($data);
+    $left_data = $total_data - floor(count($data)/25)*25;
+    $data = array_slice($data ,-17,17 );
+    // dd($final_data);
+    $account_id = array();
+    $links = array();
+    $status =array();
+    $spent_ammount =array();
+    $account_name =array();
+    $total_pages = $fb->getPageCount();
+    $page=$total_pages;
+    
+    for($i=0 ; $i<=count($data)-1; $i++){
+        $id =$data[$i]['account_id'] ;
+        $status_data=$data[$i]['account_status'];
+        $spent=$data[$i]['amount_spent'];
+        $name=$data[$i]['name'];
+        $link = $fb->createLink($data[$i]['account_id'] ); 
+        array_push($links, $link);
+        array_push($account_id , $id);
+        array_push($status , $status_data);
+        array_push($account_name , $name);
+        array_push($spent_ammount, $spent);
+       
+    }
+
+    
+    
+
+
+    
+    
+    return view("dashboard.basic-admin")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
+    'ids'=>$account_id,'status'=>$status,
+     "links"=>$links , "total_pages"=>$total_pages ,"page"=>$page,'next_link'=>"",'prev_link'=>""]);
+    
+}
+
+public function last_page_date_filter(Request $request , FacebookApiCalls $fb){
+ 
+$data = $fb->getAllDataDateFilter($request->startDate , $request->endDate);
+$data = $data["data"];
+    // dd(count($data["data"]));
+    $total_data = count($data);
+    $left_data = $total_data - floor(count($data)/25)*25;
+    $data = array_slice($data ,-17,17 );
+    // dd($final_data);
+    $account_id = array();
+    $links = array();
+    $status =array();
+    $spent_ammount =array();
+    $account_name =array();
+    $total_pages = $fb->getPageCount();
+    $page=$total_pages;
+    
+    for($i=0; $i<=count($data)-1 ; $i++){
+        $id =$data[$i]['account_id'] ;
+        $status_data=$data[$i]['account_status'];
+        $link = $fb->createLink($data[$i]['account_id'] ); 
+        
+        
+        $name=$data[$i]['name'];
+        $has = array_keys($data[$i]);
+        if( in_array('insights',$has)){
+            $spent=$data[$i]['insights']['data'][0]['spend'];
+            array_push($spent_ammount, $spent);
+        }
+        else{
+            array_push($spent_ammount, "0");
+        }
+        array_push($account_id , $id);
+        array_push($status , $status_data);
+        array_push($account_name , $name);
+        array_push($links, $link);
+        
+     
+        
+       
+    }
+
+
+    return view("dashboard.date-filter")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
+    'ids'=>$account_id,'status'=>$status,'next_link'=>"",'prev_link'=>"",
+         "startDate"=>$request->startDate , "endDate"=>$request->endDate,"links"=>$links , "total_pages"=>$total_pages,
+         "page"=>$total_pages]);
+
+  
+
+}
+
 
 public function dashboard_status_filtered(Request $request , FacebookApiCalls $fb){
     $account_id = array();
