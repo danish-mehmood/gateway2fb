@@ -162,7 +162,7 @@ class facebookAdsController extends Controller
         , "total_pages"=>$total_pages , "page"=>$page]);
     }
 
-/*
+
     public function searchFiltered(Request $request, FacebookApiCalls $fb){
         $data = $fb->Search_Filter($request->searchTerm);
         $account_id = array();
@@ -174,7 +174,7 @@ class facebookAdsController extends Controller
         $prev_page ="";
         //dd(count($data['data']));
         $page = 1;
-        $total_pages = (round(count($data["data"])/25)==0?$page:round(count($data["data"])/25));
+        //$total_pages = (round(count($data["data"])/25)==0?$page:round(count($data["data"])/25));
 
         $has=array_keys($data["paging"]);
         if(in_array('next',$has)){
@@ -205,10 +205,10 @@ class facebookAdsController extends Controller
         //dd($links);
         return view("dashboard.basic-admin")->with(['spent'=>$spent_ammount ,'names'=>$account_name,
         'ids'=>$account_id,'status'=>$status,'next_link'=>$next_page,'prev_link'=>$prev_page,"links"=>$links
-        , "total_pages"=>$total_pages , "page"=>$page]);
+        , "total_pages"=>$page , "page"=>$page]);
     }
 
-*/
+
     public function filtered(Request $request , FacebookApiCalls $fb){
     //    dd($request->startDate);
     $this->validate($request,[
