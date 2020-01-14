@@ -67,10 +67,7 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          {{-- <li class="nav-item"> --}}
           <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-
-            {{-- <span class="menu-title">Basic UI Elements</span> --}}
             <i class="menu-arrow"></i>
           </a>
         </ul>
@@ -80,7 +77,11 @@
         <div class="content-wrapper">
           <div class="row">
             @include('includes.datepicker')
-
+            @if($indexpage=="")
+              <div class="col-lg-12 grid-margin" style="margin-top: 1%;margin-bottom: 0;">
+                <label style="color:#4056F4; text-align:right;font-size:0.95rem;">&nbsp;<label style="color:black;font-size:0.95rem;">Spending Period: </label>&nbsp;&nbsp;&nbsp;({{$startDate}}&nbsp;&nbsp;<u>to</u>&nbsp;&nbsp;{{$endDate}}) </label>
+              </div>
+            @endif
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
@@ -94,40 +95,38 @@
                     </div>
                     <div class="col-lg-3 row" style="height:40px">
                       @if($prev_link != "")
-                      <form id="paginate_form2" action="{{route('first_page')  }}" method="POST">
+                      <form id="paginate_form2" action="{{route('first_page',["startDate"=>$startDate,"endDate"=>$endDate])}}" method="POST">
                         @csrf
-                        {{-- <input type="submit" value="Next"> --}}
-                        <button type="submit" class="btn btn-sm btn-success">
-                          <<</button> {{-- <input type="hidden" name="next" value="{{$next_link}}"> --}}
+                      <input type="hidden" name="sfpagination" id="sfpagination" value="{{$sfpagination}}" >
+                        <button type="submit" class="btn btn-sm btn-success"><<</button>
                       </form>
                       &nbsp;
-                      <form id="paginate_form" action="{{route('prev_paginator',["page"=>$page])}}" method="POST">
+                      <form id="paginate_form" action="{{route('prev_paginator',["startDate"=>$startDate,"endDate"=>$endDate, "page"=>$page])}}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-sm btn-primary">
-                          <</button> <input type="hidden" name="prev" value="{{$prev_link}}">
+                        <input type="hidden" name="sfpagination" id="sfpagination" value="{{$sfpagination}}" >
+                        <button type="submit" class="btn btn-sm btn-primary"><</button>
+                        <input type="hidden" name="prev" value="{{$prev_link}}">
                       </form>
                       @endif
                       &nbsp;
-                      <form id="paginate_form2" action="{{route('next',["page"=>$page])  }}" method="POST">
+                      <form id="paginate_form3" action="{{route('next',["startDate"=>$startDate,"endDate"=>$endDate,"page"=>$page])}}" method="POST">
                         @csrf
                         @if($next_link != "")
-                        {{-- <input type="submit" value="Next"> --}}
+                        <input type="hidden" name="sfpagination" id="sfpagination" value="{{$sfpagination}}" >
                         <button type="submit" class="btn btn-sm btn-primary">></button>
                         <input type="hidden" name="next" value="{{$next_link}}">
                         @endif
                       </form>
                       &nbsp;
-                      <form id="paginate_form2" action="{{route('last_page')  }}" method="POST">
+                      <form id="paginate_form4" action="{{route('last_page',["startDate"=>$startDate,"endDate"=>$endDate])}}" method="POST">
                         @csrf
                         @if($next_link != "")
-                        {{-- <input type="submit" value="Next"> --}}
+                        <input type="hidden" name="sfpagination" id="sfpagination" value="{{$sfpagination}}" >
                         <button type="submit" class="btn btn-sm btn-success">>></button>
-                        {{-- <input type="hidden" name="next" value="{{$next_link}}"> --}}
                         @endif
                       </form>
                     </div>
                   </div>
-                  {{-- <p class="card-description"> Add class <code>.table-bordered</code> </p> --}}
                   <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -135,7 +134,6 @@
                         <th> Account Name </th>
                         <th> Status </th>
                         <th> Amount Spent </th>
-                        {{-- <th> Deadline </th> --}}
                       </tr>
                     </thead>
                     <tbody>
@@ -192,13 +190,6 @@
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
-        {{-- <footer class="footer">
-<div class="container-fluid clearfix">
-<span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="#" target="_blank">gateway2facebook</a>. All rights reserved.</span>
-<span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>by aspire logics
-</span>
-</div>
-</footer> --}}
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
@@ -231,8 +222,48 @@
 
 </html>
 <script>
-  $("#startDate, #endDate").click(function() {
+  $("#startDate, #endDate, #searchTerm").click(function() {
     var para = document.getElementById("validation-errors");
     para.innerHTML = " ";
   });
+
+  function setValues(){
+    var para = document.getElementById("validation-errors");
+    var searchTermValue = $("#searchTerm").val();
+    var startDateValue = $("#startDate").val();
+    var endDateValue = $("#endDate").val();
+    //alert(startDateValue+' '+endDateValue);
+    if((startDateValue != "" && endDateValue == "") || ((startDateValue == "" && endDateValue != ""))){
+        para.innerHTML="* Please enter start/end dates.";
+        return false;
+    }
+    else if( (new Date(startDateValue).getTime() > new Date(endDateValue).getTime()))
+    {
+        para.innerHTML="* Start date must occur before End date.";
+        return false;
+    }
+    else if((startDateValue == "" || endDateValue == "") && (searchTermValue == "")){
+        para.innerHTML="* Please select a search criteria.";
+        return false;
+    }
+
+    // -1- for search term only  -2- for date value only  -3- for both search and date
+    
+    var type = 0;
+    if(searchTermValue != "") {
+      if(startDateValue != "" && endDateValue != ""){
+        type = 3;
+      }
+      else{
+        type = 1;
+      } 
+    }
+    else if(startDateValue != "" && endDateValue != ""){
+      type = 2;
+    }
+    $('#searchfilter').val(type);
+    return true;
+  }
+
+
 </script>

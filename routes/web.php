@@ -27,13 +27,14 @@ Route::group(['prefix'=>'admin'  , 'middleware'=>['auth' , 'can:isAdmin']] , fun
     Route::post('/search-filter',"facebookAdsController@searchFiltered")->name('search_filtered');
     Route::post('/date-filter', "facebookAdsController@filtered")->name('filtered');
     // Route::get('/date-filter2', "facebookAdsController@filtered")->name('filtered2');
-    Route::post('date-filter/page/next',"facebookAdsController@next_date_paginator" )->name('next_date_paginator');
-    Route::post('date-filter/page/prev',"facebookAdsController@prev_date_paginator" )->name('prev_date_paginator');
+    //Route::post('date-filter/page/next',"facebookAdsController@next_date_paginator" )->name('next_date_paginator');
+    //Route::post('date-filter/page/prev',"facebookAdsController@prev_date_paginator" )->name('prev_date_paginator');
     // Route::post('/status_filter',"facebookAdsController@status_filter")->name('status_filter');
     Route::post('last_page' , "facebookAdsController@last_page")->name("last_page");
     Route::post('/',"facebookAdsController@index" )->name('first_page');
 
-    Route::post('/date-filter/last_page' , "facebookAdsController@last_page_date_filter")->name("last_page_date_filter");
-    Route::post('/date-filter/first_page',"facebookAdsController@filtered" )->name('first_page_date_filter');
+    //Route::post('/date-filter/last_page' , "facebookAdsController@last_page_date_filter")->name("last_page_date_filter");
+    //Route::post('/date-filter/first_page',"facebookAdsController@filtered" )->name('first_page_date_filter');
 
+    Route::post('/test-filter', "facebookAdsController@testFiltered")->name('test_filtered');
 });

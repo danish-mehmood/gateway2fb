@@ -70,6 +70,34 @@ class FacebookApiCalls{
       return $json;
    }
 
+   public function Combined_Filter($startDate,$endDate,$searchTerm){
+      $curl = curl_init();
+      $url = "https://graph.facebook.com/v5.0/$this->user_id/adaccounts?fields=name,account_status,account_id";
+      //dd($startDate,$endDate,$searchTerm);
+      if($endDate != null && $startDate != null){
+         $url = $url.",insights.time_range({'since':'$startDate','until':'$endDate'}){spend}";
+      }
+      else{
+         $url = $url.",amount_spent";
+      }
+      if($searchTerm != null){
+         $url = $url."&filtering=[{'field':'name','operator':'CONTAIN','value':'$searchTerm'}]&limit=1000";
+      }
+      $url = $url."&access_token=$this->access_token";
+
+      // return $url;
+      //dd($url);
+      curl_setopt($curl , CURLOPT_URL , $url);
+      curl_setopt($curl , CURLOPT_RETURNTRANSFER , 1);
+      curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+      curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+      $result = curl_exec($curl);
+      $json = json_decode($result , true );
+      curl_close($curl);
+      
+      return $json;
+   }
+
      public function  getMoreData($url , $number){
        $url = $url."&limit=$number";
        $curl = curl_init();
